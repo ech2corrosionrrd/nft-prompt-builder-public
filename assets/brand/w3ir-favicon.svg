@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="w3ir">
+  <!-- Favicon-варіант знака: градієнт-тайл + білий куб у гексагоні (без іскор —
+       читабельність на 16–32px, див. БРЕНД.md § 5). -->
+  <defs>
+    <linearGradient id="t" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6e56cf"/>
+      <stop offset="1" stop-color="#4c3a9e"/>
+    </linearGradient>
+  </defs>
+  <rect width="32" height="32" rx="7" fill="url(#t)"/>
+  <path d="M16 4 L26.4 10 L26.4 22 L16 28 L5.6 22 L5.6 10 Z"
+        fill="none" stroke="#fff" stroke-opacity="0.92" stroke-width="1.8" stroke-linejoin="round"/>
+  <g fill="#fff">
+    <path d="M16 9.5 L21.6 12.75 L16 16 L10.4 12.75 Z" fill-opacity="0.96"/>
+    <path d="M10.4 12.75 L16 16 L16 22.5 L10.4 19.25 Z" fill-opacity="0.78"/>
+    <path d="M21.6 12.75 L16 16 L16 22.5 L21.6 19.25 Z" fill-opacity="0.6"/>
+  </g>
+</svg>

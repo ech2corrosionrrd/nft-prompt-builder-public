@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  w3ir — wordmark (леттермарк) · чернетка v1
+  Концепт: «w i r» — монолінійний geometric lowercase (нейтральний,
+  currentColor → адаптується до фону). «3» — акцентний гранований гліф:
+  зигзаг із градієнтом продукту + світлий блік по верхніх ребрах, що
+  РИМУЄТЬСЯ з лит-гранями знака (куба). «3» — шарнір сенсу: Web3 + «взір» (e).
+  Палітра: theme.py (#9e8cfc → #6e56cf → #4c3a9e). viewBox 380×190.
+  Використання: standalone — на темному; для світлого фону задати
+  style="color:#1f2937" (літери успадкують currentColor; «3» лишиться градієнтом).
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 190" width="380" height="190"
+     role="img" aria-label="w3ir" style="color:#ecedef">
+  <defs>
+    <linearGradient id="wm3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#9e8cfc"/>
+      <stop offset="0.55" stop-color="#6e56cf"/>
+      <stop offset="1" stop-color="#4c3a9e"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Літери w · i · r — монолінія, нейтральний currentColor -->
+  <g fill="none" stroke="currentColor" stroke-width="22"
+     stroke-linecap="round" stroke-linejoin="round">
+    <!-- w -->
+    <path d="M30 60 L50 150 L78 94 L106 150 L126 60"/>
+    <!-- i (стебло + крапка) -->
+    <path d="M244 150 L244 82"/>
+    <!-- r (стебло + плече) -->
+    <path d="M280 150 L280 84"/>
+    <path d="M280 100 C280 84 296 80 318 90"/>
+  </g>
+  <circle cx="244" cy="66" r="11" fill="currentColor"/>
+
+  <!-- «3» — гранований акцент-гліф -->
+  <path d="M152 66 L226 86 L166 106 L226 130 L152 150"
+        fill="none" stroke="url(#wm3)" stroke-width="27"
+        stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Світловий блік по верхніх ребрах (та сама лит-логіка, що в кубі знака) -->
+  <g fill="none" stroke="#d8d1ff" stroke-opacity="0.6" stroke-width="6"
+     stroke-linecap="round" stroke-linejoin="round">
+    <path d="M152 66 L226 86"/>
+    <path d="M166 106 L226 130"/>
+  </g>
+</svg>

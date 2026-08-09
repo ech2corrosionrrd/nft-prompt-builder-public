@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  w3ir — знак (mark) · чернетка v1
+  Концепт: ізометричний куб (NFT/3D-ассет) у гексагональній рамці (on-chain
+  контейнер) + 3 піксель-іскри (AI-генерація). Палітра = токени продукту
+  (theme.py): #9e8cfc → #6e56cf → #4c3a9e. Без схемних доріжок (свідомо).
+  Працює на темному й світлому фоні. viewBox 256×256, масштабовний.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" role="img" aria-label="w3ir">
+  <defs>
+    <!-- Грані куба: верх — найсвітліший, ліва — середня, права — найтемніша -->
+    <linearGradient id="faceTop" x1="0" y1="0" x2="0.6" y2="1">
+      <stop offset="0" stop-color="#bcb0ff"/>
+      <stop offset="1" stop-color="#9e8cfc"/>
+    </linearGradient>
+    <linearGradient id="faceLeft" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7e6ce0"/>
+      <stop offset="1" stop-color="#6e56cf"/>
+    </linearGradient>
+    <linearGradient id="faceRight" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5a47b0"/>
+      <stop offset="1" stop-color="#4c3a9e"/>
+    </linearGradient>
+    <!-- Рамка-гексагон: діагональний градієнт продукту -->
+    <linearGradient id="frame" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#9e8cfc"/>
+      <stop offset="0.55" stop-color="#6e56cf"/>
+      <stop offset="1" stop-color="#4c3a9e"/>
+    </linearGradient>
+    <!-- Іскри: електрик-блакитний акцент (єдина «холодна» нота) -->
+    <linearGradient id="spark" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8ab4ff"/>
+      <stop offset="1" stop-color="#5b8cff"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#6e56cf" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#6e56cf" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- М'яке сяйво за кубом (глибина на темному фоні; невидиме на світлому) -->
+  <circle cx="128" cy="128" r="74" fill="url(#glow)"/>
+
+  <!-- Рамка-гексагон (pointy-top), лише обведення, скруглені стики -->
+  <path d="M128 28 L214.6 78 L214.6 178 L128 228 L41.4 178 L41.4 78 Z"
+        fill="none" stroke="url(#frame)" stroke-width="11"
+        stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Ізометричний куб: 3 видимі грані -->
+  <g stroke="#0a0b0f" stroke-opacity="0.18" stroke-width="1.5" stroke-linejoin="round">
+    <path d="M128 70 L178.2 99 L128 128 L77.8 99 Z" fill="url(#faceTop)"/>
+    <path d="M77.8 99 L128 128 L128 186 L77.8 157 Z" fill="url(#faceLeft)"/>
+    <path d="M178.2 99 L128 128 L128 186 L178.2 157 Z" fill="url(#faceRight)"/>
+  </g>
+  <!-- Світловий блік по верхніх ребрах -->
+  <path d="M77.8 99 L128 70 L178.2 99" fill="none" stroke="#d4ccff"
+        stroke-opacity="0.55" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- 3 піксель-іскри, що відлітають від верхньо-правого ребра куба -->
+  <g fill="url(#spark)">
+    <rect x="184" y="74" width="13" height="13" rx="2.5"/>
+    <rect x="203" y="60" width="9"  height="9"  rx="2"/>
+    <rect x="218" y="49" width="6"  height="6"  rx="1.5"/>
+  </g>
+</svg>

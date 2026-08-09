@@ -1,0 +1,77 @@
+# Конфігурація Streamlit для роботи за Cloudflare Tunnel (reverse proxy)
+# на субдомені ai.w3ir.io. Покроковий гайд розгортання: ТУНЕЛЬ.md.
+# Локальний запуск працює з цією ж конфігурацією.
+
+[server]
+# Без автовідкриття браузера — застосунок живе за тунелем
+headless = true
+# Cloudflare Tunnel сам термінує HTTPS; всередині мережі — звичайний HTTP
+port = 8501
+# Слухати всі інтерфейси, щоб тунель-агент на цій же машині міг під'єднатися
+address = "0.0.0.0"
+
+# Cloudflare як reverse proxy підміняє заголовки Host/Origin, через що Streamlit
+# за замовчуванням рве WebSocket-з'єднання (вічне «Please wait…»). Вимикаємо
+# перевірки CORS/XSRF — захист периметра забезпечує тунель (Cloudflare Access),
+# а не Streamlit.
+enableCORS = false
+enableXsrfProtection = false
+
+# Деякі проксі некоректно передають стиснені WebSocket-фрейми
+enableWebsocketCompression = false
+
+# Ліміт завантаження файлів (МБ) — JPG/PNG для мінтингу на Етапі 3
+maxUploadSize = 50
+
+# Роздача папки static/ на /app/static/ — публічні посилання на згенеровані
+# зображення (network_config.publish_static_asset), щоб зовнішні Web3-сервіси
+# тягнули файли напряму і не впиралися в ліміт Cloudflare 100 с на запит
+enableStaticServing = true
+
+[browser]
+# Зовнішня адреса, яку бачить браузер користувача (через тунель — HTTPS:443)
+serverAddress = "ai.w3ir.io"
+serverPort = 443
+gatherUsageStats = false
+
+# Прод: без Python-traceback і внутрішніх шляхів (C:\Промт\...) у UI.
+[client]
+showErrorDetails = false
+toolbarMode = "minimal"
+
+# Базова тема — темна (дефолт). Повні палітри light/dark нижче; перемикач у sidebar
+# (theme.py) синхронізує Streamlit native theme через localStorage + reload.
+[theme]
+base = "dark"
+primaryColor = "#6e56cf"
+backgroundColor = "#0a0b0f"
+secondaryBackgroundColor = "#12141a"
+textColor = "#ecedef"
+borderColor = "#232734"
+
+[theme.dark]
+base = "dark"
+primaryColor = "#6e56cf"
+backgroundColor = "#0a0b0f"
+secondaryBackgroundColor = "#12141a"
+textColor = "#ecedef"
+borderColor = "#232734"
+
+[theme.dark.sidebar]
+backgroundColor = "#12141a"
+secondaryBackgroundColor = "#0d0f14"
+textColor = "#ecedef"
+
+[theme.light]
+base = "light"
+primaryColor = "#6e56cf"
+backgroundColor = "#ffffff"
+secondaryBackgroundColor = "#f3f0fa"
+textColor = "#1f2937"
+borderColor = "rgba(110, 86, 207, 0.20)"
+codeBackgroundColor = "#f3f0fa"
+
+[theme.light.sidebar]
+backgroundColor = "#f5f3ff"
+secondaryBackgroundColor = "#ede9fe"
+textColor = "#1f2937"

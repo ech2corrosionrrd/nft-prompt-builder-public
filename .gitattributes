@@ -1,0 +1,18 @@
+* text=auto eol=lf
+*.md text eol=lf
+# .sh виконуються на Linux-VPS у деплої — CRLF ламає shebang.
+*.sh text eol=lf
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ini text eol=crlf
+*.ps1 text eol=crlf
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.zip binary
+*.pdf binary
+*.db binary
+*.woff binary
+*.woff2 binary

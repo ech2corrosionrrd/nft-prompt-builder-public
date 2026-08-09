@@ -1,0 +1,5 @@
+# Опційно: browser E2E проти staging (не в CI за замовчуванням).
+#   pip install -r requirements-e2e.txt
+#   playwright install chromium
+pytest>=8.0.0
+playwright>=1.49.0

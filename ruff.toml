@@ -1,0 +1,17 @@
+# Lint-конфіг проєкту. Дефолтний набір правил (E4/E7/E9 + F) — фокус на реальних
+# багах F-класу: невизначені імена та дублі імпортів. Саме цей клас двічі ловив
+# NameError у хендлерах кнопок Streamlit, які headless-smoke пропускає
+# (build_panel → Batch, stage2_generator → «Очистити батч»). Гейт на ruff —
+# дешева страховка від цієї сліпої зони.
+#
+# Стильові E402/E702 лишаємо ввімкненими, але глушимо точково там, де патерн
+# свідомий, інакше вони створюють шум і знецінюють гейт.
+
+[lint.per-file-ignores]
+# sys.path-bootstrap + load_dotenv мусять виконатися ДО імпортів модулів проєкту.
+"scripts/smoke_gateway_loopback.py" = ["E402"]
+# pytest.importorskip-гард перед імпортом playwright (skip без e2e-залежностей).
+"tests/e2e/*" = ["E402"]
+# Навмисні компактні виклики через `;` (читабельні flush-/mkdir-пари).
+"services/legal_pages.py" = ["E702"]
+"tests/test_ipfs_storage.py" = ["E702"]

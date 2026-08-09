@@ -1,0 +1,20 @@
+.env
+.env.*
+!.env.example
+КЛЮЧІ.ini
+__pycache__/
+*.pyc
+.streamlit/secrets.toml
+.pytest_cache/
+# coverage-артефакти (coverage_gate / pytest-cov)
+.coverage
+.coverage.*
+coverage-money.json
+htmlcov/
+data/
+temp_assets/
+static/
+backups/
+logs/
+.claude/
+/gpt-image-*.jpg

@@ -1,0 +1,55 @@
+# НАМІРИ. Цей файл редагують руками; `requirements.txt` — згенерований із нього
+# лок (повний транзитивний зріз, точні піни). Як перекомпілювати — у шапці лока.
+#
+# Що чим ставити:
+#   • прод і CI  → requirements.txt (лок; linux/Python 3.12, як у Dockerfile)
+#   • локально   → requirements.in  (діапазони; машина на Windows/Python 3.14,
+#     лок під linux/3.12 туди ставити не можна — розійдуться платформенні пакети)
+# Через це локальні версії можуть відрізнятися від прод-версій. Це прийнятно,
+# бо авторитетний прогін — CI-джоба `image-tests`: вона ганяє сьют усередині
+# прод-образу. Локальний `pytest` лишається швидким сигналом, не останнім.
+#
+# Критичні SDK/API: підлога = поточна перевірена версія, стеля = наступний major.
+# Блокує неконтрольований мажорний бамп (історія: Streamlit прибрав
+# websocket_headers у 1.42 → перейшли на st.context.cookies; OpenAI вилучив
+# dall-e), лишаючи патчі. Підіймати стелю свідомо після прогону тестів.
+streamlit>=1.61.1,<2.0.0
+openai>=2.41.0,<3.0.0
+python-dotenv>=1.0.0
+httpx>=0.28.0,<1.0.0
+anthropic>=0.109.0,<1.0.0
+pydantic>=2.13.4,<3.0.0
+
+# Web3-конвеєр, Етап 3 (опційно): мінт через Thirdweb-контракти на Base/EVM.
+# MetaMask Sign-In, Sybil (мін. ETH Base), Thirdweb
+web3>=6.15.0
+
+# Phantom Sign-In (Solana ed25519) — verify_solana_signature у wallet_auth.py.
+# Зазвичай підтягується транзитивно через web3, але залежність пряма.
+cryptography>=42.0.0
+
+# Конвеєр, Етап 2: Flux.1 через Replicate HTTP API (httpx; REPLICATE_API_TOKEN).
+# Окремий pip-пакет replicate не потрібен (несумісний із Python 3.14+).
+
+# SIWE nonce-стор для multi-worker (опційно): AUTH_NONCE_BACKEND=redis.
+# Без цього застосунок працює з in-memory стором (--workers 1).
+# redis>=5.0.0
+
+# Розробка / тести
+pytest>=8.0.0
+# fakeredis — тести RedisNonceStore без живого Redis-сервера
+fakeredis>=2.0.0
+# pytest-cov — coverage-гейт money-модулів (scripts/coverage_gate.py, verify_stable)
+pytest-cov>=6.0.0
+
+# Фаза A: Helio webhook API (опційно на pay.w3ir.io)
+fastapi>=0.141.1,<1.0.0
+# starlette — транзитивна залежність fastapi, але тримаємо ЯВНІ межі. Мажорний
+# стрибок 0.x→1.x поїхав мовчки (CI зібрав 1.3.1, локально лишалась 0.52.1) і
+# змінив внутрішнє представлення маршрутів: `include_router` тепер загортає їх у
+# приватний `_IncludedRouter` без `.path`/`.methods`. Тест структури роутерів
+# червонів у CI, лишаючись зеленим локально; прод збирався з тієї ж незапіненої
+# версії. Верхню межу фактично задає streamlit (`starlette<2`), не fastapi —
+# у fastapi 0.141.1 стелі немає взагалі (`starlette>=0.46.0`), тож тримаємо свою.
+starlette>=1.3.1,<2.0.0
+uvicorn[standard]>=0.52.1,<1.0.0

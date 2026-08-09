@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NFT Prompt Builder — Connect</title>
+  <!-- Inline SVG favicon (w3ir mark — cube in hexagon) — no separate asset request -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2032%2032%27%3E%3Cdefs%3E%3ClinearGradient%20id%3D%27t%27%20x1%3D%270%27%20y1%3D%270%27%20x2%3D%271%27%20y2%3D%271%27%3E%3Cstop%20offset%3D%270%27%20stop-color%3D%27%236e56cf%27%2F%3E%3Cstop%20offset%3D%271%27%20stop-color%3D%27%234c3a9e%27%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%2732%27%20height%3D%2732%27%20rx%3D%277%27%20fill%3D%27url%28%23t%29%27%2F%3E%3Cpath%20d%3D%27M16%204%20L26.4%2010%20L26.4%2022%20L16%2028%20L5.6%2022%20L5.6%2010%20Z%27%20fill%3D%27none%27%20stroke%3D%27%23fff%27%20stroke-opacity%3D%270.92%27%20stroke-width%3D%271.8%27%20stroke-linejoin%3D%27round%27%2F%3E%3Cg%20fill%3D%27%23fff%27%3E%3Cpath%20d%3D%27M16%209.5%20L21.6%2012.75%20L16%2016%20L10.4%2012.75%20Z%27%20fill-opacity%3D%270.96%27%2F%3E%3Cpath%20d%3D%27M10.4%2012.75%20L16%2016%20L16%2022.5%20L10.4%2019.25%20Z%27%20fill-opacity%3D%270.78%27%2F%3E%3Cpath%20d%3D%27M21.6%2012.75%20L16%2016%20L16%2022.5%20L21.6%2019.25%20Z%27%20fill-opacity%3D%270.6%27%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E" />
+  <meta name="description" content="Sign in with your wallet to NFT Prompt Builder — turn a prompt into a mint-ready NFT collection. Non-custodial, pay-as-you-go." />
+  <!-- OG/Twitter — shared card with landing (G1.2) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="NFT Prompt Builder — Connect your wallet" />
+  <meta property="og:description" content="Idea → AI art → mint-ready bundle in 15 minutes. Non-custodial, pay-as-you-go." />
+  <meta property="og:url" content="https://ai.w3ir.io/login" />
+  <meta property="og:image" content="https://w3ir.io/og-card.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="NFT Prompt Builder — Connect your wallet" />
+  <meta name="twitter:description" content="Idea → AI art → mint-ready bundle in 15 minutes. Non-custodial, pay-as-you-go." />
+  <meta name="twitter:image" content="https://w3ir.io/og-card.png" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
+  <style>
+    /* Radix-dark tokens — mirror theme.py / config.toml */
+    :root{
+      --bg:#0a0b0f; --surface:#12141a; --elevated:#1a1d26; --input:#0d0f14;
+      --border:#232734; --text:#ecedef; --muted:#9ba1ae; --lo:#5a6072;
+      --accent:#6e56cf; --accent-soft:#9e8cfc;
+      --success:#30a46c; --error:#e5484d;
+      --rarity-legend:#f5a623;
+    }
+    *{font-family:'Inter',system-ui,sans-serif}
+    .mono{font-family:'JetBrains Mono',monospace}
+    body{margin:0;background:var(--bg);color:var(--text)}
+    /* Left panel — generative mesh gradient */
+    .mesh{
+      background:
+        radial-gradient(40% 50% at 20% 25%, rgba(110,86,207,.55), transparent 60%),
+        radial-gradient(45% 45% at 80% 20%, rgba(158,140,252,.40), transparent 60%),
+        radial-gradient(50% 50% at 70% 85%, rgba(245,166,35,.25), transparent 60%),
+        radial-gradient(40% 40% at 25% 80%, rgba(48,164,108,.22), transparent 60%),
+        var(--bg);
+    }
+    @keyframes float{0%,100%{transform:translateY(0) rotate(var(--r,0deg))}50%{transform:translateY(-14px) rotate(var(--r,0deg))}}
+    .nft-card{animation:float 7s ease-in-out infinite;box-shadow:0 24px 60px rgba(0,0,0,.55)}
+    .btn-accent{background:linear-gradient(135deg,var(--accent),var(--accent-soft))}
+    .btn-accent:hover{filter:brightness(1.08);box-shadow:0 6px 24px rgba(110,86,207,.45)}
+    .wallet-row:hover{border-color:var(--accent);background:var(--elevated)}
+    .spin{animation:spin .7s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+  </style>
+</head>
+<body class="min-h-screen">
+  <div class="grid min-h-screen lg:grid-cols-2">
+
+    <!-- ── LEFT 50%: brand + generative art ───────────────────────────────── -->
+    <aside class="mesh relative hidden overflow-hidden lg:flex flex-col justify-between p-12">
+      <div class="flex items-center gap-3">
+        <div class="grid h-10 w-10 place-items-center rounded-xl btn-accent">
+          <svg viewBox="0 0 32 32" class="h-7 w-7" aria-label="w3ir">
+            <path d="M16 4 L26.4 10 L26.4 22 L16 28 L5.6 22 L5.6 10 Z" fill="none" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/>
+            <g fill="#fff"><path d="M16 9.5 L21.6 12.75 L16 16 L10.4 12.75 Z"/><path d="M10.4 12.75 L16 16 L16 22.5 L10.4 19.25 Z" fill-opacity="0.82"/><path d="M21.6 12.75 L16 16 L16 22.5 L21.6 19.25 Z" fill-opacity="0.62"/></g>
+          </svg>
+        </div>
+        <span class="text-lg font-semibold tracking-tight">NFT Prompt Builder</span>
+      </div>
+
+      <div class="relative grid place-items-center py-10">
+        <div class="nft-card grid h-44 w-44 -rotate-6 place-items-center rounded-3xl border border-[var(--border)] bg-[var(--surface)] text-6xl" style="--r:-6deg">🦊</div>
+        <div class="nft-card absolute -right-4 top-6 grid h-32 w-32 rotate-6 place-items-center rounded-2xl border border-[var(--border)] bg-[var(--elevated)] text-5xl" style="--r:6deg;animation-delay:1.2s">🛸</div>
+        <div class="nft-card absolute -left-6 bottom-2 grid h-28 w-28 -rotate-12 place-items-center rounded-2xl border border-[var(--border)] bg-[var(--elevated)] text-4xl" style="--r:-12deg;animation-delay:2.1s">⚡</div>
+      </div>
+
+      <div>
+        <h1 class="text-3xl font-extrabold leading-tight tracking-tight">Mint collections.<br/>Own the signature.</h1>
+        <p class="mt-3 max-w-sm text-sm text-[var(--muted)]">Generative pipeline for Web3 creators. Networks: <span class="text-[var(--text)]">Base</span> · <span class="text-[var(--text)]">Polygon</span>.</p>
+        <div class="mt-5 flex gap-2 text-xs text-[var(--lo)]">
+          <span class="rounded-full border border-[var(--border)] px-3 py-1">SIWE · EIP-4361</span>
+          <span class="rounded-full border border-[var(--border)] px-3 py-1">Non-custodial</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ── RIGHT 50%: auth card ───────────────────────────────────────────── -->
+    <main class="flex items-center justify-center p-6 sm:p-10">
+      <div class="w-full max-w-md">
+        <a href="https://w3ir.io" class="mb-8 inline-flex items-center gap-1 text-sm text-[var(--lo)] hover:text-[var(--muted)]">← Back to w3ir.io</a>
+
+        <!-- Brand on mobile: left panel (.mesh) hidden below lg -->
+        <div class="mb-5 flex items-center gap-2 lg:hidden">
+          <div class="grid h-8 w-8 place-items-center rounded-lg btn-accent">
+            <svg viewBox="0 0 32 32" class="h-6 w-6" aria-label="w3ir">
+              <path d="M16 4 L26.4 10 L26.4 22 L16 28 L5.6 22 L5.6 10 Z" fill="none" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/>
+              <g fill="#fff"><path d="M16 9.5 L21.6 12.75 L16 16 L10.4 12.75 Z"/><path d="M10.4 12.75 L16 16 L16 22.5 L10.4 19.25 Z" fill-opacity="0.82"/><path d="M21.6 12.75 L16 16 L16 22.5 L21.6 19.25 Z" fill-opacity="0.62"/></g>
+            </svg>
+          </div>
+          <span class="font-semibold tracking-tight">NFT Prompt Builder</span>
+        </div>
+
+        <div class="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-7 shadow-2xl backdrop-blur">
+          <h2 class="text-2xl font-bold tracking-tight">Connect to Mint</h2>
+          <p class="mt-1 text-sm text-[var(--muted)]">Build an NFT collection: <span class="text-[var(--text)]">idea → images → mint-ready bundle</span>. Sign in with your wallet — the signature proves ownership, <span class="text-[var(--text)]">no gas or transactions</span>.</p>
+
+          <!-- Pipeline steps — onboarding route -->
+          <div class="mt-5 flex items-center justify-between gap-1 text-center text-[11px] leading-tight text-[var(--muted)]">
+            <div class="flex-1"><div class="text-lg">💳</div>Credits</div>
+            <span class="text-[var(--lo)]">→</span>
+            <div class="flex-1"><div class="text-lg">1️⃣</div>Text</div>
+            <span class="text-[var(--lo)]">→</span>
+            <div class="flex-1"><div class="text-lg">2️⃣</div>Images</div>
+            <span class="text-[var(--lo)]">→</span>
+            <div class="flex-1"><div class="text-lg">3️⃣</div>Export</div>
+          </div>
+
+          <button id="connect" class="btn-accent mt-6 flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3 font-semibold text-white transition">
+            <span id="connect-spin" class="hidden h-4 w-4 rounded-full border-2 border-white/40 border-t-white spin"></span>
+            <span id="connect-label">Connect Wallet</span>
+          </button>
+
+          <div id="status" class="mt-3 min-h-[1.25rem] text-center text-xs"></div>
+
+          <!-- Why wallet / safety -->
+          <div class="mt-5 rounded-xl border border-[var(--border)] bg-[var(--input)] p-4 text-sm">
+            <p class="font-medium text-[var(--text)]">Why a wallet?</p>
+            <p class="mt-1 text-[var(--muted)]">It's your login instead of a password — and your signature on the collection.</p>
+            <ul class="mt-3 space-y-1.5 text-[var(--muted)]">
+              <li class="flex items-start gap-2"><span class="text-[var(--success)]">✓</span><span>No gas or transactions — signature only</span></li>
+              <li class="flex items-start gap-2"><span class="text-[var(--success)]">✓</span><span>We never have access to your funds</span></li>
+              <li class="flex items-start gap-2"><span class="text-[var(--success)]">✓</span><span>~30 seconds — and you're in</span></li>
+            </ul>
+          </div>
+
+          <div class="my-6 flex items-center gap-3 text-xs text-[var(--lo)]">
+            <div class="h-px flex-1 bg-[var(--border)]"></div>or<div class="h-px flex-1 bg-[var(--border)]"></div>
+          </div>
+
+          <!-- Email OTP — secondary path (backend OTP separate, disabled for now) -->
+          <input type="email" placeholder="you@wallet.eth (coming soon)" disabled
+                 class="w-full cursor-not-allowed rounded-xl border border-[var(--border)] bg-[var(--input)] px-4 py-3 text-sm text-[var(--lo)] placeholder-[var(--lo)]" />
+          <a href="https://w3ir.io" class="mt-3 block text-center text-sm font-medium text-[var(--accent-soft)] hover:underline">
+            What is this app? →
+          </a>
+        </div>
+
+        <p class="mt-6 text-center text-xs text-[var(--lo)]">
+          <a href="https://w3ir.io" class="hover:text-[var(--muted)]">Home</a> ·
+          <a href="https://w3ir.io/#pricing" class="hover:text-[var(--muted)]">Pricing</a>
+        </p>
+      </div>
+    </main>
+  </div>
+
+  <!-- ── Wallet picker modal ─────────────────────────────────────────────── -->
+  <div id="modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+    <div class="w-full max-w-sm rounded-2xl border border-[var(--border)] bg-[var(--elevated)] p-5">
+      <div class="mb-4 flex items-center justify-between">
+        <h3 class="font-semibold">Choose wallet</h3>
+        <button id="modal-close" class="text-[var(--lo)] hover:text-[var(--text)]">✕</button>
+      </div>
+      <div id="wallet-list" class="space-y-2"></div>
+      <p class="mt-4 text-center text-xs text-[var(--lo)]">EVM · MetaMask / Coinbase · Solana · Phantom</p>
+    </div>
+  </div>
+
+  <script type="module">
+    import { isAddress, getAddress } from 'https://esm.sh/viem@2';
+
+    // FastAPI serves this page and /auth/* (same origin).
+    const API_BASE = '';
+    // Redirect target after sign-in (Streamlit behind tunnel).
+    const APP_URL = 'https://ai.w3ir.io';
+
+    // EIP-6963 (Multi Injected Provider Discovery): збираємо анонсованих EVM-
+    // гаманців ДО кліку. Вирішує конфлікт `window.ethereum`, коли Phantom мімікрує
+    // MetaMask (виставляє isMetaMask=true) і перехоплює запит підпису. Кожен
+    // гаманець анонсує власний provider-обʼєкт → pick() веде підпис у правильний.
+    const _eip6963 = [];
+    window.addEventListener('eip6963:announceProvider', (e) => {
+      if(!_eip6963.some(p => p.info.rdns === e.detail.info.rdns)) _eip6963.push(e.detail);
+    });
+    window.dispatchEvent(new Event('eip6963:requestProvider'));
+
+    const $ = (id) => document.getElementById(id);
+    const setStatus = (msg, kind='') => {
+      const el = $('status');
+      el.textContent = msg || '';
+      el.style.color = kind === 'err' ? 'var(--error)' : kind === 'ok' ? 'var(--success)' : 'var(--muted)';
+    };
+    const busy = (on) => {
+      $('connect').disabled = on;
+      $('connect-spin').classList.toggle('hidden', !on);
+      $('connect-label').textContent = on ? 'Waiting…' : 'Connect Wallet';
+    };
+
+    // Wallet detection: EIP-6963 (точна дискаверія кількох гаманців) з фолбеком
+    // на legacy window.ethereum; Phantom — завжди Solana-шлях (signMessage), а не
+    // його EVM-інжект, бо саме EVM-Phantom плутав вибір MetaMask.
+    const _EVM_ICONS = { 'io.metamask':'🦊', 'com.coinbase.wallet':'🔵' };
+    function detectProviders(){
+      const out = [];
+      for(const { info, provider } of _eip6963){
+        if(info.rdns === 'app.phantom') continue;  // Phantom беремо як Solana нижче
+        out.push({ id:info.rdns, label:info.name, icon:_EVM_ICONS[info.rdns] || '👛', chain:'evm', pick:()=>provider });
+      }
+      // Legacy-фолбек: лише якщо EIP-6963 нічого не анонсував (старі гаманці).
+      if(!out.length){
+        const eth = window.ethereum;
+        if(eth){
+          const list = Array.isArray(eth.providers) ? eth.providers : [eth];
+          const mm = list.find(p=>p.isMetaMask && !p.isCoinbaseWallet && !p.isPhantom);
+          if(mm) out.push({id:'metamask', label:'MetaMask', icon:'🦊', chain:'evm', pick:()=>mm});
+          const cb = list.find(p=>p.isCoinbaseWallet);
+          if(cb) out.push({id:'coinbase', label:'Coinbase Wallet', icon:'🔵', chain:'evm', pick:()=>cb});
+          if(!out.length) out.push({id:'injected', label:'Browser Wallet', icon:'👛', chain:'evm', pick:()=>eth});
+        }
+      }
+      const sol = window.phantom?.solana || (window.solana?.isPhantom ? window.solana : null);
+      if(sol) out.push({id:'phantom', label:'Phantom (Solana)', icon:'👻', chain:'solana', pick:()=>sol});
+      return out;
+    }
+
+    function openModal(providers){
+      const wrap = $('wallet-list');
+      wrap.innerHTML = '';
+      providers.forEach(p=>{
+        const b = document.createElement('button');
+        b.className = 'wallet-row flex w-full items-center gap-3 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-4 py-3 text-left transition';
+        b.innerHTML = `<span class="text-xl">${p.icon}</span><span class="font-medium">${p.label}</span>`;
+        b.onclick = () => { closeModal(); connect(p); };
+        wrap.appendChild(b);
+      });
+      $('modal').classList.remove('hidden');
+      $('modal').classList.add('flex');
+    }
+    function closeModal(){ $('modal').classList.add('hidden'); $('modal').classList.remove('flex'); }
+
+    // SIWE flow: nonce → (wallet signature) → verify → redirect.
+    async function getNonce(address, chainId){
+      setStatus('Requesting nonce…');
+      // chainId — активна мережа гаманця: сервер ставить її у «Chain ID:» SIWE-
+      // повідомлення, інакше MetaMask ховає екран підпису («chain ID does not match»).
+      let url = `${API_BASE}/auth/nonce?address=${address}`;
+      if(Number.isInteger(chainId) && chainId > 0) url += `&chain_id=${chainId}`;
+      const nr = await fetch(url);
+      if(!nr.ok) throw new Error((await nr.json()).detail || 'nonce error');
+      return nr.json();
+    }
+    async function postVerify(address, nonce, signature){
+      setStatus('Verifying signature…');
+      const vr = await fetch(`${API_BASE}/auth/verify`, {
+        method:'POST', headers:{'Content-Type':'application/json'}, credentials:'include',
+        body: JSON.stringify({ address, nonce, signature }),
+      });
+      if(!vr.ok) throw new Error((await vr.json()).detail || 'verify failed');
+      await vr.json();
+      setStatus('Signed in ✓', 'ok');
+      window.location.href = APP_URL;
+    }
+
+    async function signInEVM(provider){
+      if(!provider){ setStatus('Provider not found', 'err'); return; }
+      busy(true); setStatus('Connecting wallet…');
+      try{
+        const accounts = await provider.request({ method:'eth_requestAccounts' });
+        let address = accounts[0];
+        if(!isAddress(address)) throw new Error('Invalid wallet address');
+        address = getAddress(address); // checksum
+        // Активна мережа гаманця → у SIWE-повідомлення, щоб MetaMask показав підпис.
+        let chainId = null;
+        try { chainId = parseInt(await provider.request({ method:'eth_chainId' }), 16) || null; } catch(_){}
+        const { nonce, message } = await getNonce(address, chainId);
+        setStatus('Confirm the signature in your wallet…');
+        const signature = await provider.request({ method:'personal_sign', params:[message, address] });
+        await postVerify(address, nonce, signature);
+      }catch(e){ setStatus(e.message || String(e), 'err'); }
+      finally{ busy(false); }
+    }
+
+    async function signInSolana(provider){
+      if(!provider){ setStatus('Phantom not found', 'err'); return; }
+      busy(true); setStatus('Connecting Phantom…');
+      try{
+        const resp = await provider.connect();
+        const address = resp.publicKey.toString(); // base58 pubkey
+        const { nonce, message } = await getNonce(address);
+        setStatus('Confirm the signature in Phantom…');
+        const signed = await provider.signMessage(new TextEncoder().encode(message), 'utf8');
+        const signature = [...signed.signature].map(b=>b.toString(16).padStart(2,'0')).join(''); // hex
+        await postVerify(address, nonce, signature);
+      }catch(e){ setStatus(e.message || String(e), 'err'); }
+      finally{ busy(false); }
+    }
+
+    function connect(entry){
+      if(!entry) return;
+      if(entry.chain === 'solana') signInSolana(entry.pick());
+      else signInEVM(entry.pick());
+    }
+
+    $('connect').onclick = () => {
+      const providers = detectProviders();
+      if(!providers.length){ setStatus('No wallet found. Install MetaMask, Coinbase Wallet, or Phantom.', 'err'); return; }
+      if(providers.length === 1 && providers[0].id !== 'injected'){ connect(providers[0]); return; }
+      openModal(providers);
+    };
+    $('modal-close').onclick = closeModal;
+    $('modal').onclick = (e) => { if(e.target === $('modal')) closeModal(); };
+  </script>
+</body>
+</html>
