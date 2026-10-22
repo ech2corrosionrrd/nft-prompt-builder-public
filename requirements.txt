@@ -32,7 +32,7 @@
 #
 aiohappyeyeballs==2.7.1
     # via aiohttp
-aiohttp==3.14.3
+aiohttp==3.14.4
     # via web3
 aiosignal==1.4.0
     # via aiohttp
@@ -335,5 +335,5 @@ websockets==15.0.1
     #   streamlit
     #   uvicorn
     #   web3
-yarl==1.24.5
+yarl==1.25.1
     # via aiohttp
