@@ -61,7 +61,7 @@ bitarray==3.10.1
     # via eth-account
 blinker==1.9.0
     # via streamlit
-certifi==2026.7.22
+certifi==2026.10.18
     # via
     #   httpcore
     #   httpx
